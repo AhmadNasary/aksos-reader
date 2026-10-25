@@ -1,0 +1,35 @@
+{
+  "name": "aksos-reader",
+  "version": "0.2.0",
+  "private": true,
+  "main": "index.ts",
+  "scripts": {
+    "start": "expo start",
+    "ios": "expo start --ios",
+    "android": "expo start --android",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@expo-google-fonts/vazirmatn": "*",
+    "@expo/vector-icons": "*",
+    "@react-native-async-storage/async-storage": "*",
+    "@react-native-community/slider": "*",
+    "expo": "*",
+    "expo-document-picker": "*",
+    "expo-file-system": "*",
+    "expo-font": "*",
+    "expo-image": "*",
+    "expo-status-bar": "*",
+    "fast-xml-parser": "^4.5.0",
+    "jszip": "^3.10.1",
+    "react": "*",
+    "react-native": "*",
+    "react-native-safe-area-context": "*",
+    "react-native-webview": "*",
+    "zustand": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "*",
+    "typescript": "*"
+  }
+}

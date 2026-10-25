@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "name": "Aksos",
+    "slug": "aksos-reader",
+    "version": "0.2.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "bundleIdentifier": "af.aksosbookstore.reader",
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "af.aksosbookstore.reader"
+    }
+  }
+}
