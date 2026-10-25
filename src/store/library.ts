@@ -1,6 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
+import { createPersistedStore } from './createStore';
 import { deleteBookFiles } from '../lib/epub';
 import type { Book, Bookmark, Locator } from '../types';
 
@@ -14,9 +13,9 @@ type LibraryState = {
   removeBookmark: (id: string, bookmarkId: string) => void;
 };
 
-export const useLibrary = create<LibraryState>()(
-  persist(
-    (set) => ({
+export const useLibrary = createPersistedStore<LibraryState>(
+  'aksos.library',
+  (set) => ({
       books: {},
 
       addBook: (book) => set((s) => ({ books: { ...s.books, [book.id]: book } })),
@@ -61,13 +60,8 @@ export const useLibrary = create<LibraryState>()(
             },
           };
         }),
-    }),
-    {
-      name: 'aksos.library',
-      storage: createJSONStorage(() => AsyncStorage),
-      partialize: (s) => ({ books: s.books }),
-    }
-  )
+  }),
+  ['books']
 );
 
 /** Books sorted: most recently opened first, then most recently added. */

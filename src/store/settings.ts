@@ -1,6 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
+import { createPersistedStore } from './createStore';
 import type { ReaderThemeId, UiLanguage } from '../types';
 
 export const FONT_SCALES = [0.8, 0.9, 1, 1.1, 1.25, 1.4, 1.6, 1.8, 2.0];
@@ -16,9 +14,9 @@ type SettingsState = {
   set: (patch: Partial<Omit<SettingsState, 'set'>>) => void;
 };
 
-export const useSettings = create<SettingsState>()(
-  persist(
-    (set) => ({
+export const useSettings = createPersistedStore<SettingsState>(
+  'aksos.settings',
+  (set) => ({
       uiLanguage: 'ps',
       readerTheme: 'paper',
       fontScaleIndex: 2,
@@ -26,11 +24,6 @@ export const useSettings = create<SettingsState>()(
       scroll: false,
       publisherStyles: true,
       set: (patch) => set(patch),
-    }),
-    {
-      name: 'aksos.settings',
-      storage: createJSONStorage(() => AsyncStorage),
-      partialize: ({ set, ...rest }) => rest,
-    }
-  )
+  }),
+  ['uiLanguage', 'readerTheme', 'fontScaleIndex', 'lineHeightIndex', 'scroll', 'publisherStyles']
 );
