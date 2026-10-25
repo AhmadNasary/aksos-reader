@@ -1,12 +1,6 @@
-/** A position in a book (epub.js CFI) plus what we show for it. */
-export type Locator = {
-  cfi: string;
-  href?: string;
-  /** Chapter title */
-  title?: string;
-  /** 0..1 through the whole book (available once locations are generated) */
-  totalProgression?: number;
-};
+import type { Locator } from 'react-native-readium';
+
+export type { Locator };
 
 export type Bookmark = {
   id: string;
@@ -26,7 +20,7 @@ export type Book = {
   coverExt?: string;
   addedAt: number;
   lastOpenedAt?: number;
-  /** 0..1 */
+  /** 0..1, taken from locator.locations.totalProgression */
   progress: number;
   locator?: Locator;
   bookmarks: Bookmark[];

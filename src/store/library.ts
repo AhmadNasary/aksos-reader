@@ -23,7 +23,6 @@ export const useLibrary = create<LibraryState>()(
 
       removeBook: (id) => {
         deleteBookFiles(id);
-        AsyncStorage.removeItem(`aksos.locations.${id}`).catch(() => {});
         set((s) => {
           const { [id]: _removed, ...rest } = s.books;
           return { books: rest };
@@ -39,7 +38,7 @@ export const useLibrary = create<LibraryState>()(
         set((s) => {
           const book = s.books[id];
           if (!book) return s;
-          const progress = locator.totalProgression ?? book.progress;
+          const progress = locator.locations?.totalProgression ?? book.progress;
           return { books: { ...s.books, [id]: { ...book, locator, progress } } };
         }),
 

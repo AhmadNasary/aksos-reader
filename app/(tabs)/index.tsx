@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import { useMemo } from 'react';
 import {
   ActivityIndicator,
@@ -10,18 +11,18 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNav } from '../navigation';
-import { BookCover } from '../components/BookCover';
-import { ProgressBar } from '../components/ProgressBar';
-import { useImportBooks } from '../components/useImportBooks';
-import { formatPercent, useT } from '../i18n';
-import { sortByRecent, useLibrary } from '../store/library';
-import { useSettings } from '../store/settings';
-import { colors, fonts } from '../theme';
-import type { Book } from '../types';
+import { BookCover } from '@/components/BookCover';
+import { ProgressBar } from '@/components/ProgressBar';
+import { useImportBooks } from '@/components/useImportBooks';
+import { formatPercent, useT } from '@/i18n';
+import { sortByRecent, useLibrary } from '@/store/library';
+import { useSettings } from '@/store/settings';
+import { colors, fonts } from '@/theme';
+import type { Book } from '@/types';
 
-export function ReadingNow() {
-  const { openBook: open } = useNav();
+const open = (id: string) => router.push({ pathname: '/reader/[id]', params: { id } });
+
+export default function ReadingNow() {
   const t = useT();
   const lang = useSettings((s) => s.uiLanguage);
   const insets = useSafeAreaInsets();
@@ -52,7 +53,7 @@ export function ReadingNow() {
         <EmptyState onAdd={importBooks} />
       ) : (
         <>
-          <Hero book={current} onOpen={() => open(current.id)} />
+          <Hero book={current} />
           {others.length > 0 && (
             <>
               <Text style={styles.h2}>{t.recent}</Text>
@@ -80,13 +81,13 @@ export function ReadingNow() {
   );
 }
 
-function Hero({ book, onOpen }: { book: Book; onOpen: () => void }) {
+function Hero({ book }: { book: Book }) {
   const t = useT();
   const lang = useSettings((s) => s.uiLanguage);
   const started = book.progress > 0.001;
 
   return (
-    <Pressable onPress={onOpen} style={styles.hero}>
+    <Pressable onPress={() => open(book.id)} style={styles.hero}>
       <View style={styles.heroCoverWrap}>
         <BookCover book={book} width={150} />
       </View>

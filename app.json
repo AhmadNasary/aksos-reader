@@ -2,15 +2,41 @@
   "expo": {
     "name": "Aksos",
     "slug": "aksos-reader",
-    "version": "0.2.0",
+    "scheme": "aksos",
+    "version": "0.1.0",
     "orientation": "portrait",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
     "ios": {
       "bundleIdentifier": "af.aksosbookstore.reader",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "LSSupportsOpeningDocumentsInPlace": true,
+        "UIFileSharingEnabled": true
+      }
     },
     "android": {
-      "package": "af.aksosbookstore.reader"
+      "package": "af.aksosbookstore.reader",
+      "edgeToEdgeEnabled": true
+    },
+    "extra": {
+      "supportsRTL": true,
+      "forcesRTL": true
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      [
+        "expo-build-properties",
+        {
+          "ios": { "deploymentTarget": "15.1" },
+          "android": { "compileSdkVersion": 35 }
+        }
+      ],
+      "./plugins/withReadium.js"
+    ],
+    "experiments": {
+      "typedRoutes": true
     }
   }
 }

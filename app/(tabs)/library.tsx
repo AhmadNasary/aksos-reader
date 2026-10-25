@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import {
   ActivityIndicator,
@@ -11,21 +12,20 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNav } from '../navigation';
-import { BookCover } from '../components/BookCover';
-import { useImportBooks } from '../components/useImportBooks';
-import { formatPercent, useT } from '../i18n';
-import { sortByRecent, useLibrary } from '../store/library';
-import { useSettings } from '../store/settings';
-import { colors, fonts } from '../theme';
-import type { Book, UiLanguage } from '../types';
+import { BookCover } from '@/components/BookCover';
+import { useImportBooks } from '@/components/useImportBooks';
+import { formatPercent, useT } from '@/i18n';
+import { sortByRecent, useLibrary } from '@/store/library';
+import { useSettings } from '@/store/settings';
+import { colors, fonts } from '@/theme';
+import type { Book, UiLanguage } from '@/types';
 
 type Filter = 'all' | 'reading' | 'finished';
 const COLS = 3;
 const GAP = 18;
 const PAD = 20;
 
-export function Library() {
+export default function Library() {
   const t = useT();
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
@@ -99,14 +99,13 @@ export function Library() {
 
 function GridItem({ book, width, onLongPress }: { book: Book; width: number; onLongPress: () => void }) {
   const t = useT();
-  const { openBook } = useNav();
   const lang = useSettings((s) => s.uiLanguage);
   const status =
     book.progress >= 0.99 ? t.finished : book.progress > 0.001 ? formatPercent(book.progress, lang) : t.notStarted;
 
   return (
     <Pressable
-      onPress={() => openBook(book.id)}
+      onPress={() => router.push({ pathname: '/reader/[id]', params: { id: book.id } })}
       onLongPress={onLongPress}
       style={({ pressed }) => [{ width, opacity: pressed ? 0.85 : 1 }]}
     >

@@ -35,7 +35,7 @@ export function ContentsSheet({
   toc: TocItem[];
   book: Book;
   current?: Locator;
-  onNavigate: (target: string) => void;
+  onNavigate: (target: Locator) => void;
   onRemoveBookmark: (id: string) => void;
 }) {
   const t = useT();
@@ -45,7 +45,7 @@ export function ContentsSheet({
   const rows = useMemo(() => flatten(toc), [toc]);
   const currentHref = bareHref(current?.href);
 
-  const go = (target: string) => {
+  const go = (target: Locator) => {
     onClose();
     // let the modal start closing before the reader jumps
     setTimeout(() => onNavigate(target), 50);
@@ -88,7 +88,9 @@ export function ContentsSheet({
               const active = bareHref(item.href) === currentHref;
               return (
                 <Pressable
-                  onPress={() => go(item.href)}
+                  onPress={() =>
+                    go({ href: item.href, type: 'application/xhtml+xml', title: item.title } as Locator)
+                  }
                   style={[styles.tocRow, { borderBottomColor: theme.hairline, paddingStart: 20 + depth * 18 }]}
                 >
                   <Text
@@ -118,7 +120,7 @@ export function ContentsSheet({
             }
             renderItem={({ item }) => (
               <Pressable
-                onPress={() => go(item.locator.cfi)}
+                onPress={() => go(item.locator)}
                 style={[styles.markRow, { borderBottomColor: theme.hairline }]}
               >
                 <Ionicons name="bookmark" size={18} color={colors.danger} />
@@ -127,7 +129,7 @@ export function ContentsSheet({
                     {item.label || book.title}
                   </Text>
                   <Text style={[styles.markMeta, { color: theme.chromeMuted }]}>
-                    {formatPercent(item.locator.totalProgression ?? 0, lang)} ·{' '}
+                    {formatPercent(item.locator.locations?.totalProgression ?? 0, lang)} ·{' '}
                     {new Date(item.createdAt).toLocaleDateString(lang === 'en' ? 'en' : 'fa-AF')}
                   </Text>
                 </View>
